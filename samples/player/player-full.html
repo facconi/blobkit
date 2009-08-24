@@ -21,9 +21,8 @@
 				switchKey: 'OK',
 				uri: "http://s3.amazonaws.com/Tvblob-test/boogie.m4v",
 				autoplay: false,
-				fullscreen: true
-			};
-			
+				fullscreen: true,
+			}
 			TVB.player.init(playerConfig);
 			TVB.CustomEvent.subscribeEvent(TVB.player.events.stop, function() {
 				document.getElementById('text').innerHTML = 'Going back...';

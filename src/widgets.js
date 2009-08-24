@@ -62,18 +62,24 @@ TVB.widget.colorButtonsBarB4Handler = null;
 TVB.widget.colorButtonsBar = function(butt1, butt2, butt3, butt4) {
 	try {		
 		TVB.log("Widget: colorButtonsBar(" + butt1 + ", " + butt2 + ", " + butt3 + ", " + butt4 + ")");
-		if (document.getElementById('TVB.widget.colorButtonsBarHandler') === null) {
+		if (document.getElementById('TVB.widget.colorButtonsBarHandler') == undefined) {
+			/*
+			TVB.CustomEvent.subscribeEvent(TVB.remote.button['RED'], TVB.widget.colorButtonsBarRemote);
+			TVB.CustomEvent.subscribeEvent(TVB.remote.button['GREEN'], TVB.widget.colorButtonsBarRemote);
+			TVB.CustomEvent.subscribeEvent(TVB.remote.button['YELLOW'], TVB.widget.colorButtonsBarRemote);
+			TVB.CustomEvent.subscribeEvent(TVB.remote.button['BLUE'], TVB.widget.colorButtonsBarRemote);
+			TVB.CustomEvent.subscribeEvent(TVB.remote.button['OK'], TVB.widget.colorButtonsBarRemote);
+			*/
 			TVB.log("Widget: drawing new color button bar");
 			
 			//var configWidth = 600;
 			var configWidth = window.innerWidth - 80;
-			var singleWidth = parseInt(configWidth / 4, 10);
+			var singleWidth = parseInt(configWidth / 4);
 			
-			var baseUri = null;
 			if (TVB.system.getFirmwareVersion() == "NON_TVBLOB") {
-				baseUri = 'http://storage.tvblob.com/lib/resources/';
+				var baseUri = 'http://storage.tvblob.com/lib/resources/';
 			} else {
-				baseUri = 'file://gui/resources/themes/' + TVB.system.getVideoSystem() + '/consumer_v1/platform/icons/';
+				var baseUri = 'file://gui/resources/themes/' + TVB.system.getVideoSystem() + '/consumer_v1/platform/icons/';
 			}
 			
 			TVB.log("Widget: configWidth = " + configWidth);
@@ -82,7 +88,7 @@ TVB.widget.colorButtonsBar = function(butt1, butt2, butt3, butt4) {
 			TVB.widget.colorButtonsBarHandler = document.createElement('div');
 			TVB.widget.colorButtonsBarHandler.style.position = 'fixed';
 			TVB.widget.colorButtonsBarHandler.style.overflow = 'hidden';
-			TVB.widget.colorButtonsBarHandler.style.top = parseInt(window.innerHeight - 21, 10) + "px";
+			TVB.widget.colorButtonsBarHandler.style.top = parseInt(window.innerHeight - 21) + "px";
 			TVB.widget.colorButtonsBarHandler.style.left = '0px';
 			TVB.widget.colorButtonsBarHandler.style.width = window.innerWidth;
 			TVB.widget.colorButtonsBarHandler.style.height = '21px';
@@ -153,19 +159,19 @@ TVB.widget.colorButtonsBar = function(butt1, butt2, butt3, butt4) {
 			TVB.widget.colorButtonsBarHandler.appendChild(TVB.widget.colorButtonsBarB4Handler);
 		}
 		
-		if (butt1 === null) {
+		if (butt1 == null) {
 			butt1 = '';
 		}
 
-		if (butt2 === null) {
+		if (butt2 == null) {
 			butt2 = '';
 		}
 
-		if (butt3 === null) {
+		if (butt3 == null) {
 			butt3 = '';
 		}
 
-		if (butt4 === null) {
+		if (butt4 == null) {
 			butt4 = '';
 		}
 		
@@ -178,7 +184,7 @@ TVB.widget.colorButtonsBar = function(butt1, butt2, butt3, butt4) {
 		TVB.error("Widget: colorButtonsBar: " + e.message);
 		throw e;
 	}	
-};
+}
 
 /**
  * Removes the color buttons bar widget from the DOM
@@ -187,14 +193,14 @@ TVB.widget.colorButtonsBar = function(butt1, butt2, butt3, butt4) {
 TVB.widget.colorButtonsBarRemove = function() {
 	try {
 		TVB.log("Color Buttons Bar: remove");
-		if (document.getElementById('TVB.widget.colorButtonsBarHandler') !== undefined) {
+		if (document.getElementById('TVB.widget.colorButtonsBarHandler') != undefined) {
 			document.body.removeChild(TVB.widget.colorButtonsBarHandler);
 		}
 	} catch (e) {
 		TVB.error("Widget: colorButtonsBar: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Handles remote control feedback.
@@ -210,7 +216,7 @@ TVB.widget.colorButtonsBarRemote = function(o) {
 		TVB.error("Widget: colorButtonsBarRemote: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Display or hide the loading dongle on the task bar
@@ -220,13 +226,11 @@ TVB.widget.colorButtonsBarRemote = function(o) {
 TVB.widget.setLoading = function(loadingState) {
 	try {
 		TVB.log("Widget: setLoading(" + loadingState + ")");
-		if (typeof tvblob != 'undefined') {
-			tvblob.setLoading(loadingState);
-		}
+		tvblob.setLoading(loadingState);
 	} catch (e) {
 		TVB.error("Widget: setLoading: " + e.message);
 	}
-};
+}
 
 /**
  * Display a pop up with the text in it, and two options: YES or NO
@@ -301,7 +305,7 @@ TVB.widget.yesno = function(text, callback, default_value) {
 			},
 			onUpdateCB: function(obj, line) {
 			}
-		};
+		}
 		
 		var myMenu = new TVB.menu(menuConfig);
 		menu.appendChild(myMenu.get());
@@ -323,7 +327,7 @@ TVB.widget.yesno = function(text, callback, default_value) {
 		TVB.error("Widget: yesno: " + e.message);
 		throw e;
 	}	
-};
+}
 
 /**
  * Change the color of the selected cursor in the browser.<br />
@@ -335,13 +339,11 @@ TVB.widget.yesno = function(text, callback, default_value) {
 TVB.widget.setSelectedCursorColor = function(selectedColorCode) {
 	try {
 		TVB.log("Widget: setSelectedCursorColor(" + selectedColorCode + ")");
-		if (typeof tvblob != 'undefined') {
-			tvblob.setSelectedCursorColor(selectedColorCode);
-		}
+		tvblob.setSelectedCursorColor(selectedColorCode);
 	} catch (e) {
 		TVB.error("Widget: setSelectedCursorColor: " + e.message);
 	}
-};
+}
 
 /**
  * Change the color of the highlighted cursor in the browser.<br />
@@ -353,13 +355,11 @@ TVB.widget.setSelectedCursorColor = function(selectedColorCode) {
 TVB.widget.setHighlightCursorColor = function(selectedColorCode) {
 	try {
 		TVB.log("Widget: setHighlightCursorColor(" + selectedColorCode + ")");
-		if (typeof tvblob != 'undefined') {
-			tvblob.setHighlightCursorColor(selectedColorCode);
-		}
+		tvblob.setHighlightCursorColor(selectedColorCode);
 	} catch (e) {
 		TVB.error("Widget: setHighlightCursorColor: " + e.message);
 	}
-};
+}
 
 /**
  * Set browser's label (only for trusted applications)
@@ -370,31 +370,28 @@ TVB.widget.setLabel = function(message) {
 	try {
 		// puoi controlare per feature "tvblob" version "1.3"
 		TVB.log("Widget: setLabel(" + message + ")");
-		if (typeof tvblob != 'undefined') {
-			tvblob.setLabel(message);
-		}
+		tvblob.setLabel(message);
 	} catch (e) {
 		TVB.error("Widget: setLabel: " + e.message);
 	}
-};
+}
 
 /**
  * Add a message on the button bar, lasts 5 seconds on the screen
  * @method messageBar
  * @param {String} message Message to be shown
  */
-TVB.widget.messageBar = function(message) {
+TVB.widget.messageBar= function(message) {
 	try {		
 		TVB.log("Widget: messageBar(" + message + ")");
-		if (document.getElementById('TVB.widget.messageBarHandler') === null) {
+		if (document.getElementById('TVB.widget.messageBarHandler') == undefined) {
 			var configWidth = 600;
 			var singleWidth = configWidth / 4;
 			
-			var baseUri = null;
 			if (TVB.system.getFirmwareVersion() == "NON_TVBLOB") {
-				baseUri = 'http://storage.tvblob.com/lib/resources/';
+				var baseUri = 'http://storage.tvblob.com/lib/resources/';
 			} else {
-				baseUri = 'file://gui/resources/themes/' + TVB.system.getVideoSystem() + '/consumer_v1/platform/icons/';
+				var baseUri = 'file://gui/resources/themes/' + TVB.system.getVideoSystem() + '/consumer_v1/platform/icons/';
 			}
 			
 			TVB.log("Widget: configWidth = " + configWidth);
@@ -426,7 +423,7 @@ TVB.widget.messageBar = function(message) {
 		TVB.error("Widget: messageBar: " + e.message);
 		throw e;
 	}	
-};
+}
 
 /**
  * Removes the message bar widget from the DOM
@@ -435,23 +432,22 @@ TVB.widget.messageBar = function(message) {
 TVB.widget.messageBarRemove = function() {
 	try {
 		TVB.log("Widget: messageBarRemove()");
-		if (document.getElementById('TVB.widget.messageBarHandler') !== undefined) {
+		if (document.getElementById('TVB.widget.messageBarHandler') != undefined) {
 			document.body.removeChild(TVB.widget.messageBarHandler);
 		}
 	} catch (e) {
 		TVB.error("Widget: messageBar: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
- * @method titleBarHandler
- * @private
+ * @method titleBar
  */
-TVB.widget.titleBarHandler = function() {
+TVB.widget.titleBar = new function() {
 	try {
 
-		if (window.innerHeight !== null) {
+		if (window.innerHeight != null) {
 			this.iwc = window.innerWidth;
 		} else {
 			this.iwc = 974; /* 16/9 fixed */
@@ -468,7 +464,7 @@ TVB.widget.titleBarHandler = function() {
 		this.bar.style.bottom = "0px";
 		this.bar.style.left = "0px";
 		this.bar.style.height = "28px";
-		this.bar.style.width = parseInt(this.iwc, 10) + "px";		
+		this.bar.style.width = parseInt(this.iwc) + "px";		
 		
 		/**
 		 * DOM object handlers - logo
@@ -495,7 +491,7 @@ TVB.widget.titleBarHandler = function() {
 		this.title.style.position = 'absolute';
 		this.title.style.top = "44px";
 		this.title.style.left = "40px";
-		this.title.style.width = parseInt(window.innerWidth - 169, 10) + "px";// (40 + 20 + 109)
+		this.title.style.width = parseInt(window.innerWidth - 169) + "px";// (40 + 20 + 109)
 		this.title.style.fontSize = "23pt";
 		this.title.style.fontFamily = "TVBLOB, TireriasScreen, Tiresias, sans-serif";
 		this.title.style.color = '#cccccc';
@@ -528,7 +524,7 @@ TVB.widget.titleBarHandler = function() {
 		this.handler.style.top = "0px";
 		this.handler.style.left = "0px";
 		this.handler.style.height = "72px";
-		this.handler.style.width = parseInt(this.iwc, 10) + "px";
+		this.handler.style.width = parseInt(this.iwc) + "px";
 		this.handler.style.overflow = 'hidden';
 		this.handler.style.zIndex = 100;
 		this.handler.appendChild(this.bar);
@@ -543,8 +539,8 @@ TVB.widget.titleBarHandler = function() {
 		this.render = function() {
 			try {
 				TVB.log("Widget: titleBar.render()");
-				if (document.getElementById('TVB.widget.titleHandler') === null) {
-					if (document.body.firstChild === null) {
+				if (document.getElementById('TVB.widget.titleHandler') == null) {
+					if (document.body.firstChild == null) {
 						document.body.appendChild(this.handler);
 					} else {
 						document.body.insertBefore(this.handler, document.body.firstChild);
@@ -566,7 +562,7 @@ TVB.widget.titleBarHandler = function() {
 		this.remove = function() {
 			try {
 				TVB.log("Widget: titleBar.remove()");
-				if (document.getElementById('TVB.widget.titleHandler') !== null) {
+				if (document.getElementById('TVB.widget.titleHandler') != null) {
 					document.body.removeChild(document.getElementById('TVB.widget.titleHandler'));
 				}
 			} catch (e) {
@@ -609,10 +605,10 @@ TVB.widget.titleBarHandler = function() {
 				YAHOO.util.Event.onContentReady("TVB.widget.titleBar.icon.firstChild", function(){
 					try {
 						var iw = TVB.widget.titleBar.icon.firstChild.offsetWidth;
-						var tl = parseInt(iw, 10) + 50;
-						var tw = window.innerWidth - 179 - parseInt(iw, 10);
-						TVB.widget.titleBar.title.style.left = parseInt(tl, 10) + "px";
-						TVB.widget.titleBar.title.style.width = parseInt(tw, 10) + "px";
+						var tl = parseInt(iw) + 50;
+						var tw = window.innerWidth - 179 - parseInt(iw);
+						TVB.widget.titleBar.title.style.left = parseInt(tl) + "px";
+						TVB.widget.titleBar.title.style.width = parseInt(tw) + "px";
 					} catch (e) {
 						TVB.error(e.message);
 					}
@@ -633,7 +629,7 @@ TVB.widget.titleBarHandler = function() {
 		this.setLogo = function(isTVBLOB) {
 			try {
 				TVB.log("Widget: titleBar.setLogo(" + isTVBLOB + ")");
-				if (isTVBLOB === true) {
+				if (isTVBLOB == true) {
 					this.logo.style.backgroundImage = "url('http://www.blobforge.com/static/lib/resources/lbb.png')";
 				} else {
 					this.logo.style.backgroundImage = "url('http://www.blobforge.com/static/lib/resources/lfb.png')";
@@ -704,9 +700,4 @@ TVB.widget.titleBarHandler = function() {
 		TVB.error("Widget: titleBar: " + e.message);
 		throw e;
 	}
-};
-
-/**
- * @method titleBar
- */
-TVB.widget.titleBar = new TVB.widget.titleBarHandler();
+}

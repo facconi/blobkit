@@ -15,7 +15,7 @@
  * @static
  * @return {Void}
  */
-TVB.Profiler = {};
+TVB.Profiler = new Object;
 
 /**
  * Register a function to the profiler
@@ -26,16 +26,15 @@ TVB.Profiler = {};
 TVB.Profiler.register = function(fn, namespace) {
 	try {
 		TVB.log("Profiler: register(" + fn + ")");
-		if (namespace === undefined) {
+		if (namespace == undefined)
 			namespace = window;
-		}
 	
 		YAHOO.tool.Profiler.registerFunction(fn, namespace);
 	} catch (e) {
 		TVB.error("Profiler: register: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Unregister a function from the profiler and stop profiling it
@@ -51,7 +50,7 @@ TVB.Profiler.unregister = function(fn)
 		TVB.error("Profiler: register: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Profile a function, logging a lot of usefull informations
@@ -86,7 +85,7 @@ TVB.Profiler.profile = function(fn,namespace,callback,params) {
 		TVB.error("Profiler: profile: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Returns how many times a function has been called
@@ -102,7 +101,7 @@ TVB.Profiler.callCount = function(fn) {
 		TVB.error("Profiler: callCount: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Returns the maximum execution time of a function
@@ -118,7 +117,7 @@ TVB.Profiler.maxTime = function(fn) {
 		TVB.error("Profiler: maxTime: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Returns the minimum execution time of a function
@@ -134,7 +133,7 @@ TVB.Profiler.minTime = function(fn) {
 		TVB.error("Profiler: minTime: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Returns the average execution time of a function
@@ -151,7 +150,7 @@ TVB.Profiler.averageTime = function(fn) {
 		TVB.error("Profiler: averageTime: " + e.message);
 		throw e;
 	}
-};
+}
 
 /**
  * Alias to TVB.Profiler

@@ -29,9 +29,10 @@ TVB.json.parse = function(jsonString, customFormatter) {
 			return null;
 		}
 		else {
-			if (jsonString.length === 0) {
+			if (jsonString.length == 0) {
 				return null;
-			} else {
+			}
+			else {
 				var myData = eval('(' + jsonString + ')');
 				//return YAHOO.lang.JSON.parse(jsonString);
 				return myData;
@@ -40,7 +41,7 @@ TVB.json.parse = function(jsonString, customFormatter) {
 	} catch (e) {
 		TVB.error("Json: parse: " + e.message);
 	}
-};
+}
 
 /**
  * Converts an arbitrary value to a JSON string representation.
@@ -62,4 +63,4 @@ TVB.json.stringify = function(data, whitelist, depth) {
 	} catch (e) {
 		TVB.error("Json: strinfigy: " + e.message);
 	}
-};
+}

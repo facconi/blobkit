@@ -19,13 +19,13 @@ TVB.menu = function(config) {
 	try {
 		TVB.log("Menu: __constructor");
 		// configuration verification
-		if (typeof(config.visibleElements) !== undefined && parseInt(config.visibleElements, 10) > 0) {
+		if (typeof(config.visibleElements) != undefined && parseInt(config.visibleElements) > 0) {
 			this.visibleElements = config.visibleElements;
 		} else {
 			this.visibleElements = 4;
 		}
 		
-		if (typeof(config.numElements) !== undefined && parseInt(config.numElements, 10) > 0) {
+		if (typeof(config.numElements) != undefined && parseInt(config.numElements) > 0) {
 			this.numElements = config.numElements;
 		} else {
 			throw {message: "Menu: numElements not defined"};
@@ -37,21 +37,12 @@ TVB.menu = function(config) {
 			throw {message: "Menu: drawSingleLineCB not defined"};
 		}
 		
-		if (typeof(config.disableChannelUp) == 'boolean') {
-			this.disableChannelUp = config.disableChannelUp;
-		}
-		if (typeof(config.disableChannelDown) == 'boolean') {
-			this.disableChannelDown = config.disableChannelDown;
-		}
-		if (typeof(config.disableLeftRight) == 'boolean') {
-			this.disableLeftRight = config.disableLeftRight;
-		}
-		if (typeof(config.disableUpDown) == 'boolean') {
-			this.disableUpDown = config.disableUpDown;
-		}
-		if (typeof(config.disableOk) == 'boolean') {
-			this.disableOk = config.disableOk;
-		}
+		if (typeof(config.disableChannelUp) == 'boolean') this.disableChannelUp = config.disableChannelUp;
+		if (typeof(config.disableChannelDown) == 'boolean') this.disableChannelDown = config.disableChannelDown;
+		if (typeof(config.disableLeftRight) == 'boolean') this.disableLeftRight = config.disableLeftRight;
+		if (typeof(config.disableUpDown) == 'boolean') this.disableUpDown = config.disableUpDown;
+		if (typeof(config.disableOk) == 'boolean') this.disableOk = config.disableOk;
+
 		
 		if (typeof(config.onFocusCB) == 'function') {
 			this.onFocusCB = config.onFocusCB;
@@ -93,6 +84,7 @@ TVB.menu = function(config) {
 					break;
 				case 'cilinder':
 					throw {message: "Menu: menuType cilinder unimplemented"};
+					break;
 				default:
 					throw {message: "Menu: menuType " + config.menuType + " is invalid"};
 			}
@@ -145,7 +137,7 @@ TVB.menu = function(config) {
 		TVB.log("ERROR Menu: __constructor: " + e.message);
 		throw e;
 	}
-};
+}
 
 TVB.menu.prototype = {
 	// configurations
@@ -262,31 +254,40 @@ TVB.menu.prototype = {
 	get: function() {
 		try {
 			TVB.log("Menu: get()");
-			if (this.menuDiv !== undefined) 
+			if (this.menuDiv != undefined) 
 			{
-				if (this.disableLeftRight === false)
+				if (this.disableLeftRight == false)
 				{
-					TVB.CustomEvent.subscribeEvent(TVB.remote.button.LEFT, this.remoteHandler, this, true);
-					TVB.CustomEvent.subscribeEvent(TVB.remote.button.RIGHT, this.remoteHandler, this, true);
+					TVB.CustomEvent.subscribeEvent(TVB.remote.button['LEFT'],this.remoteHandler, this, true);
+					TVB.CustomEvent.subscribeEvent(TVB.remote.button['RIGHT'],this.remoteHandler, this, true);
 				}
 				
-				if (this.disableUpDown === false) {
-					TVB.CustomEvent.subscribeEvent(TVB.remote.button.UP, this.remoteHandler, this, true);
-					TVB.CustomEvent.subscribeEvent(TVB.remote.button.DOWN, this.remoteHandler, this, true);
+				if (this.disableUpDown == false)
+				{
+					TVB.CustomEvent.subscribeEvent(TVB.remote.button['UP'],this.remoteHandler, this, true);
+					TVB.CustomEvent.subscribeEvent(TVB.remote.button['DOWN'],this.remoteHandler, this, true);
 				}
 				
-				if (this.disableChannelUp === false) {
-					TVB.CustomEvent.subscribeEvent(TVB.remote.button.CHANNEL_UP, this.remoteHandler, this, true);
+				if (this.disableChannelUp == false)
+				{
+					TVB.CustomEvent.subscribeEvent(TVB.remote.button['CHANNEL_UP'],this.remoteHandler, this, true);
 				}
 				
-				if (this.disableChannelDown === false) {
-					TVB.CustomEvent.subscribeEvent(TVB.remote.button.CHANNEL_DOWN, this.remoteHandler, this, true);
+				if (this.disableChannelDown == false)
+				{
+					TVB.CustomEvent.subscribeEvent(TVB.remote.button['CHANNEL_DOWN'],this.remoteHandler, this, true);
 				}
 				
-				if (this.disableOk === false) {
-					TVB.CustomEvent.subscribeEvent(TVB.remote.button.OK, this.remoteHandler, this, true);
+				if (this.disableOk == false)
+				{
+					TVB.CustomEvent.subscribeEvent(TVB.remote.button['OK'],this.remoteHandler, this, true);
 				}
 	
+
+
+//				TVB.CustomEvent.subscribeEvent(TVB.remote.buttons.NAV, this.remoteHandler, this, true);
+//				TVB.CustomEvent.subscribeEvent(TVB.remote.button['CHANNEL_UP'], this.remoteHandler, this, true);
+//				TVB.CustomEvent.subscribeEvent(TVB.remote.button['CHANNEL_DOWN'], this.remoteHandler, this, true);
 				return this.menuDiv;
 			} else {
 				throw {message: "Menu: please init first"};
@@ -304,29 +305,38 @@ TVB.menu.prototype = {
 	deactivate: function() {
 		try {
 			TVB.log("Menu: deactivate()");
-			if (this.menuDiv !== undefined) {
-				if (this.disableLeftRight === false) {
-					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button.LEFT);
-					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button.RIGHT);
+			if (this.menuDiv != undefined) 
+			{
+				if (this.disableLeftRight == false)
+				{
+					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['LEFT']);
+					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['RIGHT']);
 				}
 				
-				if (this.disableUpDown === false) {
-					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button.UP);
-					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button.DOWN);
+				if (this.disableUpDown == false)
+				{
+					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['UP']);
+					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['DOWN']);
 				}
 				
-				if (this.disableChannelUp === false) {
-					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button.CHANNEL_UP);
+				if (this.disableChannelUp == false)
+				{
+					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['CHANNEL_UP']);
 				}
 				
-				if (this.disableChannelDown === false) {
-					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button.CHANNEL_DOWN);
+				if (this.disableChannelDown == false)
+				{
+					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['CHANNEL_DOWN']);
 				}
 				
-				if (this.disableOk === false) {
-					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button.OK);
+				if (this.disableOk == false)
+				{
+					TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['OK']);
 				}
 				
+/* 				TVB.CustomEvent.unsubscribeEvent(TVB.remote.buttons.NAV); */
+/* 				TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['CHANNEL_UP']); */
+/* 				TVB.CustomEvent.unsubscribeEvent(TVB.remote.button['CHANNEL_DOWN']); */
 				return this.menuDiv;
 			} else {
 				throw {message: "Menu: please init first"};
@@ -346,14 +356,14 @@ TVB.menu.prototype = {
 		try {
 			TVB.log("Menu: countPages()");
 			// how many pages?
-			var numPages = parseInt(this.numElements / this.visibleElements, 10) + 1;
+			var numPages = parseInt(this.numElements / this.visibleElements) + 1;
 			if ( (numPages - 1) * this.visibleElements == this.numElements) {
 				numPages--;
 			}
 			this.numPages = numPages;
 			
 			// in what page do we are?
-			var currentPage = parseInt(this.currentElement / this.visibleElements, 10);
+			var currentPage = parseInt(this.currentElement / this.visibleElements);
 			if ( (currentPage - 1) * this.visibleElements == this.currentElement) {
 				currentPage--;
 			}
@@ -372,15 +382,14 @@ TVB.menu.prototype = {
 	drawPage: function() {
 		try {
 			TVB.log("Menu: drawPage()");
-			if (this.menuDiv !== undefined) 
+			if (this.menuDiv != undefined) 
 			{
 				// clean up current page
-				while (this.menuDiv.firstChild !== null) {
+				while(this.menuDiv.firstChild != null) 
 					this.menuDiv.removeChild(this.menuDiv.firstChild);
-				}
 
-				var start = parseInt(this.currentPage * this.visibleElements, 10);
-				var end = parseInt(start + this.visibleElements, 10);
+				var start = parseInt(this.currentPage * this.visibleElements);
+				var end = parseInt(start + this.visibleElements);
 				if (end > this.numElements) {
 					end = this.numElements;
 				}
@@ -388,15 +397,19 @@ TVB.menu.prototype = {
 				for (var i = start; i < end; i++) 
 				{
 					var returned = this.drawSingleLine(i, true);
-					if (typeof(returned) == 'object') {
-						if (i == this.currentElement && this.onFocusCB !== undefined) {
+					if (typeof(returned) == 'object') 
+					{
+						if (i == this.currentElement && this.onFocusCB != undefined) 
+						{
 							this.onFocusCB(returned, this.currentElement);
 						}
 
 						this.menuDiv.appendChild(returned);
 						TVB.log("Menu: appended child");
-					}  else {
-						TVB.log("ERROR Menu: drawPage: returned is not an object!");
+					} 
+					else 
+					{
+						TVB.log("ERROR Menu: drawPage: returned is not an object!")
 					}
 				}
 			} else {
@@ -420,7 +433,7 @@ TVB.menu.prototype = {
 		try {
 			TVB.log("Menu: drawSingleLine(" + lineNumber + ", " + visible + ")");
 			// chiamo una callback this.drawSigleLineCB
-			if (typeof(visible) !== undefined && visible === false) {
+			if (typeof(visible) != undefined && visible == false) {
 				// prefetch
 			} else {
 				var newLine = this.drawSingleLineCB(lineNumber);
@@ -445,8 +458,8 @@ TVB.menu.prototype = {
 		try {
 			TVB.log("Menu: updateSingleLine(" + lineNumber + ")");
 			
-			var start = parseInt(this.currentPage * this.visibleElements, 10);
-			var end = parseInt(start + this.visibleElements, 10);
+			var start = parseInt(this.currentPage * this.visibleElements);
+			var end = parseInt(start + this.visibleElements);
 			if (end > this.numElements) {
 				end = this.numElements;
 			}
@@ -515,7 +528,7 @@ TVB.menu.prototype = {
 	getTotalPages: function() {
 		try {
 			TVB.log("Menu: getTotalPages()");
-			var total = parseInt(this.numElements / this.visibleElements, 10);
+			var total = parseInt(this.numElements / this.visibleElements);
 			if (total * this.visibleElements != this.numElements) {
 				total++;
 			}
@@ -543,19 +556,19 @@ TVB.menu.prototype = {
 			var idToFocus = 'TVBLOB_' + this.menuName + '_' + lineNumber;
 			
 			// raises the callbacks
-			if (this.onBlurCB !== undefined && lineBlurred !== undefined) {
-				if (document.getElementById(idToBlur) !== undefined) {
+			if (this.onBlurCB != undefined && lineBlurred != undefined) {
+				if (document.getElementById(idToBlur) != undefined) {
 					TVB.log("Menu: blurring line " + lineBlurred);
 					this.onBlurCB(document.getElementById(idToBlur), lineBlurred);
 				}		
 			}
-			if (this.onFocusCB !== undefined) {
+			if (this.onFocusCB != undefined) {
 				TVB.log("Menu: focussing " + this.currentElement + " by ID " + idToFocus);
 				this.onFocusCB(document.getElementById(idToFocus), lineNumber);
 			}
 			
 			// throw events
-			if (lineBlurred !== undefined) {
+			if (lineBlurred != undefined) {
 				TVB.CustomEvent.fireEvent(this.lineBlurEvent, {lineNumber: lineBlurred});				
 			}
 			TVB.CustomEvent.fireEvent(this.lineFocusEvent, {lineNumber: this.currentElement});
@@ -575,60 +588,54 @@ TVB.menu.prototype = {
 	remoteHandler: function(type, args) {
 		try {
 			TVB.log("Menu: remoteHandler()");
-			var start = parseInt(this.currentPage * this.visibleElements, 10);
-			var end = parseInt(start + this.visibleElements, 10) - 1;
+			var start = parseInt(this.currentPage * this.visibleElements);
+			var end = parseInt(start + this.visibleElements) - 1;
 			if (end > this.numElements) {
 				end = this.numElements - 1;
 			}
 			
-			var nextElement = null;
-			
 			TVB.log("Menu: start = " + start + " - end = " + end);
 			switch (args[0].keyName) {
 				case 'OK':
-					if (this.disableOk === true) {
-						TVB.CustomEvent.fireEvent(TVB.remote.button.OK);
+					if (this.disableOk == true) 
+					{
+						TVB.CustomEvent.fireEvent(TVB.remote.button['OK']);
 						break;
 					}
 
 					TVB.log("Menu: OK pushed");
-					if (this.onSelectCB !== undefined) {
+					if (this.onSelectCB != undefined) {
 						this.onSelectCB(this.currentElement);
 					}
 					TVB.CustomEvent.fireEvent(this.lineSelectEvent, {lineNumber: this.currentElement});
 					break;
 				case 'DOWN':
-					if (this.disableUpDown !== true) {
-						this.remoteHandlerDown(start, end);
-					}
+					if (this.disableUpDown == true) break;
+					this.remoteHandlerDown(start, end);
 					break;
 				case 'RIGHT':
-					if (this.disableLeftRight !== true) {
-						this.remoteHandlerDown(start, end);
-					}
+					if (this.disableLeftRight == true) break;
+					this.remoteHandlerDown(start, end);
 					break;
 				case 'UP':
-					if (this.disableUpDown !== true) {
-						this.remoteHandlerUp(start, end);
-					}
+					if (this.disableUpDown == true) break;
+					this.remoteHandlerUp(start, end);
 					break;
 				case 'LEFT':
-					if (this.disableLeftRight !== true) {
-						this.remoteHandlerUp(start, end);
-					}
+					if (this.disableLeftRight == true) break;
+					this.remoteHandlerUp(start, end);
 					break;
 				case 'CHANNEL_DOWN':
-					if (this.disableChannelDown === true) {
-						break;
-					}
+					if (this.disableChannelDown == true) break;
 					TVB.log("Menu: working on pagination");
 					// go to next page
-					nextElement = (this.currentPage + 1) * this.visibleElements;
+					var nextElement = (this.currentPage + 1) * this.visibleElements;
 					if (nextElement >= this.numElements) {
 						TVB.log("Menu: this is the last page");
-						if (this.menuType == 'dynamic' && this.onRemoteUpdateCB !== undefined) {
+						if (this.menuType == 'dynamic' && this.onRemoteUpdateCB != undefined) {
 							this.currentPage = 0;
 							this.onRemoteUpdateCB(0);
+							//this.setFocus(0);
 						} else if (this.currentPage > 0) {
 							TVB.log("Menu: back to page 0");
 							TVB.CustomEvent.fireEvent(this.pageBlurEvent, {pageNumber: this.currentPage});						
@@ -650,14 +657,12 @@ TVB.menu.prototype = {
 					}
 					break;			
 				case 'CHANNEL_UP':
-					if (this.disableChannelUp === true) {
-						break;
-					}
-					nextElement = (this.currentPage - 1) * this.visibleElements;
-					if (this.currentPage === 0) {
-						var lastPage = parseInt(this.numElements / this.visibleElements, 10);
+					if (this.disableChannelUp == true) break;
+					var nextElement = (this.currentPage - 1) * this.visibleElements;
+					if (this.currentPage == 0) {
+						var lastPage = parseInt(this.numElements / this.visibleElements);
 
-						if (this.menuType == 'dynamic' && this.onRemoteUpdateCB !== undefined) {
+						if (this.menuType == 'dynamic' && this.onRemoteUpdateCB != undefined) {
 							this.currentPage = lastPage;
 							this.onRemoteUpdateCB(1);
 							//this.setFocus((lastPage * this.visibleElements) -1);
@@ -710,12 +715,12 @@ TVB.menu.prototype = {
 			var nextElement = this.currentElement - 1;
 			if (nextElement < start) 
 			{
-				var lastPage = parseInt(this.numElements / this.visibleElements, 10);
-				if (this.currentPage === 0) 
+				var lastPage = parseInt(this.numElements / this.visibleElements);
+				if (this.currentPage == 0) 
 				{
 					if (this.menuType == 'dynamic')
 					{
-						if (this.onRemoteUpdateCB !== undefined)
+						if (this.onRemoteUpdateCB != undefined)
 						{
 							this.currentPage = lastPage;
 							this.onRemoteUpdateCB(1);
@@ -733,13 +738,23 @@ TVB.menu.prototype = {
 						TVB.CustomEvent.fireEvent(this.pageFocusEvent, {pageNumber: this.currentPage});
 						this.setFocus(this.numElements - 1);
 					}
-				} else {
-					TVB.CustomEvent.fireEvent(this.pageBlurEvent, {pageNumber: this.currentPage});						
-					this.currentPage--;
-					TVB.log("Menu: going to previous page number " + this.currentPage);
-					this.drawPage();
-					TVB.CustomEvent.fireEvent(this.pageFocusEvent, {pageNumber: this.currentPage});
-					this.setFocus(nextElement);
+				} 
+				else 
+				{
+/* 					if (this.menuType == 'dynamic') */
+/* 					{ */
+/* 						if (this.onRemoteUpdateCB != undefined) */
+/* 							this.onRemoteUpdateCB(0); */
+/* 					} */
+/* 					else */
+					{
+						TVB.CustomEvent.fireEvent(this.pageBlurEvent, {pageNumber: this.currentPage});						
+						this.currentPage--;
+						TVB.log("Menu: going to previous page number " + this.currentPage);
+						this.drawPage();
+						TVB.CustomEvent.fireEvent(this.pageFocusEvent, {pageNumber: this.currentPage});
+						this.setFocus(nextElement);
+					}
 				}
 
 				nextElement = end;
@@ -778,13 +793,16 @@ TVB.menu.prototype = {
 					TVB.log("Menu: this is the last page");
 					if (this.currentPage > 0) 
 					{
-						if (this.menuType == 'dynamic') {
-							if (this.onRemoteUpdateCB !== undefined)
+						if (this.menuType == 'dynamic')
+						{
+							if (this.onRemoteUpdateCB != undefined)
 							{
 								this.currentPage = 0;
 								this.onRemoteUpdateCB(0);
 							}
-						} else {
+						}
+						else
+						{
 							TVB.log("Menu: back to page 0");
 							TVB.CustomEvent.fireEvent(this.pageBlurEvent, {pageNumber: this.currentPage});						
 							this.currentPage = 0;
@@ -794,12 +812,16 @@ TVB.menu.prototype = {
 							this.setFocus(0);
 							TVB.widget.setLoading(false);
 						}
-					} else {
-						if (this.menuType == 'dynamic') {
-							if (this.onRemoteUpdateCB !== undefined) {
+					} 
+					else 
+					{
+						if (this.menuType == 'dynamic')
+						{
+							if (this.onRemoteUpdateCB != undefined)
 								this.onRemoteUpdateCB(0);
-							}
-						} else {
+						}
+						else
+						{
 							this.setFocus(start);
 						}
 					}
@@ -859,4 +881,4 @@ TVB.menu.prototype = {
 		}
 	}
 
-};
+}
