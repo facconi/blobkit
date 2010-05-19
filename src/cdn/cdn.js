@@ -158,13 +158,13 @@ TVB.cdn.level3Connector = {
 			end = url.indexOf("/", med);
 			file = start === 0 ? url : url.substring(end + 1, url.length);
 			
-			if (file.indexOf("mp4:") == -1 &&  (file.indexOf(".mp4") != -1 || 
+			/*if (file.indexOf("mp4:") == -1 &&  (file.indexOf(".mp4") != -1 || 
 					file.indexOf(".mov") != -1 ||
 					file.indexOf(".mpg") != -1 || 
 					file.indexOf(".f4v") != -1 || 
 					file.indexOf(".m4v") != -1 )) {
 					file = "mp4:" + file;
-			}
+			}*/
 			return serverUrl + "/" + file;
 		}catch(e){
 			TVB.error(e);
